@@ -17,50 +17,70 @@
 // Simple value or function?
 // If a function, what is the function signature?
 // let testA = 2
+// Simple value
 
 // Simple value or function?
 // If a function, what is the function signature?
 // let testB x = 2 + x
+// Function val testB: x:int -> int
 
 // let testC x = 2.0 + x
+// Function val testC: x:float -> float
 
 // let testD = "hello"
+// Simple value
 
 // let testE = printfn "hello"
+// Simple value
 
 // let testF () = 42
+// Function val testF: unit -> int
 
 // let testG () = printfn "hello"
+// Function val testG: unit -> unit
 
 // let testH x = String.length x
+// Function val testH: x:string -> int
 
 // let testI x = sprintf "%i" x
+// Function val testI: x:int -> string
 
 // let testJ x = printfn "%i" x
+// Function val testJ: x:int -> unit
 
 // let testK x =
 //     printfn "x is %f" x
 //     x  // return x
+// Function val testK: x:float -> float
 
 // let testL (f:int -> string) x =
 //     f x
+// Function val testL: f:(int -> string) -> x:int -> string
+
 
 // let testM f (x:int) :string =
 //     f x
+// Function val testM: f:(int -> string) -> x:int -> string
 
 // Trick question! Hint: what does :string modify?
 // let testN x :string = x 1
+// Function val testM: x:(int -> string) -> string
 
 // let testO x = 1
+// Function val testO: x:'a -> int
 
 // hint: what kind of thing is x?
 // let testP x = x 1
+// Function val testP: x:(int -> 'a) -> 'a
 
 // let testQ x y = x
+// Function val testQ: x:'a -> y:'b -> 'a
 
 // let testR x y z = z
+// Function val testR: x:'a -> y:'b -> z:'c -> 'c
 
 // let testS x = (x=x)
+// Function val testS: x:'a -> bool
 
 
 // =============================================
@@ -87,13 +107,16 @@ let sigB x = printfn "%i" x
 *)
 
 // val sigC = int -> string
+let sigC x = sprintf "%i" x
 
 // val sigD = unit -> string
+let sigD () = "hi"
 
 // val sigE = string -> string
+let sigE x = sprintf "%s" x
 
 // val sigF = int -> bool -> float -> string
-
+let sigF x y z = sprintf "%i %b %f" x y z 
 
 // =============================================
 // Exercise:
@@ -109,16 +132,16 @@ let sigB x = printfn "%i" x
 
 // Remove spaces from front and back of a string
 // The "s" parameter is a string and it returns a string
-let trim s = s.Trim()
+let trim (s: string) = s.Trim()
 
 // Return the length of string
 // The "s" parameter is a string and it returns an int
-let len s = s.Length
+let len (s: string) = s.Length
 
 // Replace a substring with new substring
 // The s, oldStr,newStr parameters are all string
 // and it returns a string
-let replace oldStr newStr s = s.Replace(oldStr,newStr)
+let replace (oldStr: string) newStr (s: string) = s.Replace(oldStr,newStr)
 (*
 This one is tricky because .NET has two overloads
   Replace(string,string)
@@ -136,9 +159,11 @@ So we need to say what type the parameters are too.
 // =============================================
 
 // val sigW = 'a -> int
+let sigW x = 1
 
 // val sigX = int -> 'a
 
 // val sigY = 'a -> 'a
+let sigY x = x
 
 // val sigZ = 'a -> 'b
