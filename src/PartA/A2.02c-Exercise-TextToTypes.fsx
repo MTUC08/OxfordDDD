@@ -27,7 +27,10 @@ type undefined = exn
 data PersonalName = FirstName AND LastName
 *)
 
-type PersonalName = ??
+type PersonalName = {
+    FirstName : string
+    LastName : string
+    }
 
 (*
 ------------------------------------------
@@ -37,10 +40,14 @@ data OrderLine =
     AND OrderQuantity
 *)
 
-type OrderId = ??
-type Product = ??
-type OrderQuantity = ??
-type OrderLine = ??
+type OrderId = int
+type Product = int
+type OrderQuantity = int
+type OrderLine = {
+    OrderId : OrderId
+    Product : Product
+    OrderQuantity : OrderQuantity
+    }
 
 (*
 ------------------------------------------
@@ -51,9 +58,9 @@ data Blog =
 data BlogName = all printable chars, maxlen = 100
 *)
 
-type BlogName = ??
-type BlogPost = ??
-type Blog = ??
+type BlogName = string // all printable chars, maxlen = 100
+type BlogPost = undefined
+type Blog = BlogName * BlogPost
 
 
 (*
@@ -69,10 +76,23 @@ data Hoodie =
   OR Small (with HoodieColorSmall)
 *)
 
-type TShirtColor = ??
-type TShirt = ??
+type TShirtColor =
+    | Black
+    | Red
+    | Blue
+type TShirtSize =
+    | Large
+    | Small
+type TShirt = {
+  Size: TShirtSize
+  Color: TShirtColor
+}
 
-type Hoodie = ??
+type HoodieColorSmall = Black | White
+type HoodieColorLarge = Red | Blue
+type Hoodie =
+    | Large of HoodieColorLarge
+    | Small of HoodieColorSmall
 
 
 (*
@@ -83,8 +103,8 @@ data ShippingMethod =
   OR Express (with ExpressShippingType)
 *)
 
-type ExpressShippingType = ??
-type ShippingMethod = ??
+type ExpressShippingType = OneDay | TwoDay
+type ShippingMethod = Standard | Express of ExpressShippingType
 
 
 (*
@@ -98,9 +118,9 @@ type Move = undefined
 type MoveResult = undefined
 type GameState = undefined
 
-type PlayMove = Move * GameState -> ??
+type PlayMove = Move * GameState -> MoveResult * GameState
             // ^pair of inputs      ^output
 
 // could also be written in curried style like this
-type PlayMove_v2 = Move -> GameState -> ??
+type PlayMove_v2 = Move -> GameState -> MoveResult * GameState
                 // ^param1 ^param2      ^output
