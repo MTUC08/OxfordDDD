@@ -19,7 +19,34 @@ See A2.03f-TypedDomainModel-Help.fsx for syntax you might need
 
     // TIP define a "undefined" type to use when you don't know the answer yet
     type undefined = exn
+    type WaterLevel =
+        | High
+        | Medium
+        | Low
+    type ReadyState =
+        | Ready
+        | NotEnoughWater
+        | MissingPod
+    type Water = undefined
+    type CoffeePod =
+        | DarkRoast
+        | MediumRoast
+        | LightRoast
+        | Decaffeinated
+    type CupSize =
+        | Small
+        | Medium
+        | Large    
+    type FrothLevel =
+        | Light
+        | Medium
+        | Heavy
+    type BrewState =
+        | Brewed
+        | NotBrewed
+       
+    type StartMachine = WaterLevel -> ReadyState
+    type UpdateWaterLevel = WaterLevel * Water -> WaterLevel * ReadyState
+    type InsertPod = ReadyState * CoffeePod -> ReadyState
+    type MakeCoffee = CupSize * FrothLevel -> BrewState
 
-    type MyWorkflow = MyInputData -> MyOutputData
-
-    type MyInputData = undefined
