@@ -1,0 +1,24 @@
+CoffeeMachine
+
+Workflow: StartMachine
+Inputs: WaterLevel
+Outputs: ReadyState
+
+Workflow: UpdateWaterLevel
+Inputs: WaterLevel AND optional Water
+Outputs: WaterLevel (updated) AND ReadyState
+
+Workflow: InsertPod
+Inputs: ReadyState AND CoffeePod
+Outputs: ReadyState (updated)
+
+Workflow: MakeCoffee
+Inputs: CupSize AND FrothLevel
+Outputs: BrewState
+
+data CoffeePod = DarkRoast OR MediumRoast OR LightRoast OR Decaffeinated
+data CupSize = Small OR Medium OR Large
+data BrewState = Brewed OR NotBrewed
+data WaterLevel = High OR Medium OR Low
+data ReadyState = Ready OR NotEnoughWater OR MissingPod
+Data FrothLevel = Light OR Medium OR Heavy
