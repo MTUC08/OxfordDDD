@@ -32,10 +32,13 @@ module ConstrainedTypes =
                 (s.Length = 5) && isAllDigits
 
             // construct the ZipCode
-            ??
+            if is5Digits s then Some (ZipCode s)
+            else None
 
         /// TODO Return the value
-        let value ?? = ??
+        let value zip =
+            match zip with
+            | ZipCode zip -> zip
 
 
 

@@ -64,11 +64,13 @@ open ConstrainedTypes
 let increment (olq:OrderLineQty) =
     let i1 = OrderLineQty.value olq   // i1 is an int
     let i2 = i1 + 1                   // i2 is an int
-    ???                               // return an OrderLineQty here
+    OrderLineQty.create i2                               // return an OrderLineQty here
 
 // Exercise: Write a function that subtracts one from an OrderLineQty
 let decrement (olq:OrderLineQty) =
-    ???
+    let i1 = OrderLineQty.value olq
+    let i2 = i1 - 1
+    OrderLineQty.create i2
 
 
 
@@ -129,7 +131,10 @@ increment OrderLineQty.maxValue        // this is a "None"
 // Exercise: Write a function that adds one to an OrderLineQty
 // If it goes over OrderLineQty.maxValue then return maxValue
 let increment_v2 (olq:OrderLineQty) =
-    ??
+    let i1 = OrderLineQty.value olq   // i1 is an int
+    let i2 = i1 + 1                   // i2 is an int
+    OrderLineQty.create i2
+    |> defaultValue OrderLineQty.maxValue
 
 // test it to make sure it works and stays at 100
 increment_v2 OrderLineQty.maxValue
