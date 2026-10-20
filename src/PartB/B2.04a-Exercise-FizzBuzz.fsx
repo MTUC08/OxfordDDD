@@ -103,42 +103,32 @@ OTHER F# TIPS:
         z
 *)
 
-
-let handle15Case myData =
-    // 1. Has myData been handled already? If true:
-    //    return myData unchanged
-    // 2. Is myData divisible by 15? If false:
-    //    return myData unchanged
-    // 3. Change myData to include "FizzBuzz"
-    ??
-
-    // After getting this to work, see if you can refactor to it into a
-    // single "handle" function that can be reused for 3, 5, and 15.
-
+type myData =
+    | Unhandled of int
+    | Handled of string
+    
+let handleCase divisor outputString myData =
+    match myData with
+    | Handled s -> myData
+    | Unhandled x ->
+        if isDivisibleBy divisor x then Handled outputString
+        else Unhandled x
 
 // If still unhandled at the end,
 // convert data.number into a string,
 // else return data.handled
 let finalStep myData =
-    if myData is unhandled then
-        // convert unhandled number to string
-        string (unhandled number from myData)
-    else
-        // return the handled string
-        (handled string from myData)
+    match myData with
+    | Unhandled x -> string x
+    | Handled s -> s
 
 // fizzBuzz takes an int and returns a string
 let fizzBuzz (n:int) :string =
-    // handle 15 with "FizzBuzz"
-    // then handle 3 with "Fizz"
-    // then handle 5 with "Buzz"
-    // then handle what's left
-
-    let myData = ??
+    let myData = Unhandled n
     myData
-    |> handle15case
-    |> handle3case
-    |> handle5case
+    |> handleCase 15 "FizzBuzz"
+    |> handleCase 3 "Fizz"
+    |> handleCase 5 "Buzz"
     |> finalStep
 
 // test it on the numbers up to 30
