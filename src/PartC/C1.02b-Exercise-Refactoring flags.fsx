@@ -44,7 +44,18 @@ module Customer_Before =
 // contains the redesigned code
 module Customer_After =
 
-    type Customer = undefined
+    type CustomerName = string
+    type RegistrationId = RegistrationId of int
+    type RegisteredCustomer = {
+        Name: CustomerName
+        RegistrationId: RegistrationId
+    }
+    
+    type Customer =
+        | GuestCustomer of CustomerName
+        | RegisteredCustomer of RegisteredCustomer
+    
+    
 
 (*
 Exercise 3b
@@ -75,9 +86,20 @@ module Connection_Before =
 
 // contains the redesigned code
 module Connection_After =
+    type ConnectionHandle = ConnectionHandle of int
+    
+    type ConnectedConnection = {
+        ConnectionHandle: ConnectionHandle
+        ConnectionStartedUtc: System.DateTime
+    }
+    
+    type DisconnectedConnection = {
+        ReasonForDisconnection: string
+    }
 
-
-    type Connection = undefined
+    type Connection =
+        | Connected of ConnectedConnection
+        | Disconnected of DisconnectedConnection
 
 (*
 // Exercise 3c
@@ -111,8 +133,33 @@ module Order_Before =
 
 // contains the redesigned code
 module Order_After =
+    type OrderId = OrderId of int
+    type Item = Item of string
+    type OrderItems = Item list
+    type Amount = float
+    type Date = System.DateTime
+    type NewOrder = {
+        OrderId: OrderId
+        Items: OrderItems
+    }
+    type PaidOrder = {
+        OrderId: OrderId
+        Items: OrderItems
+        PaidAmount: Amount
+        PaidDate: Date
+    }
+    type CompletedOrder = {
+        OrderId: OrderId
+        Items: OrderItems
+        PaidAmount: Amount
+        PaidDate: Date
+        ShippedDate: Date
+    }
 
-    type Order = undefined
+    type Order =
+        | New of NewOrder
+        | Paid of PaidOrder
+        | Completed of CompletedOrder
 
 (*
 Questions for discussion:
