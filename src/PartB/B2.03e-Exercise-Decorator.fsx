@@ -29,10 +29,12 @@ List.map add1 [1..10]      // do "add1" for each element of a list
 // ===========================================
 
 
-let logTheInput x = ??  // use printfn with %i, %s, or %A?
-
-let logTheOutput x = ??  // use printfn
-
+let logTheInput x =
+    printfn "input log %A" x
+    x
+let logTheOutput x =
+    printfn "output log %A"
+        x
 
 
 // ===========================================
@@ -40,8 +42,8 @@ let logTheOutput x = ??  // use printfn
 // ===========================================
 
 // TIP for add1Logged use piping "|>"
-let add1Logged x =
-    x |> ??
+let add1Logged x = x |> logTheInput |> add1 |> logTheOutput
+
 
 // test
 add1Logged 4

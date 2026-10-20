@@ -24,10 +24,18 @@ let replace (oldValue:string) (newValue:string) (inputStr:string) =
 
 let fromRomanNumerals input =
     input
-    |> ?
-    |> ?
-    // finally, we have a list of IIIIIIIIIIII
-    // so return the count of them
+    |> replace "IV" "IIII"
+    |> replace "IX" "VIIII"
+    |> replace "XL" "XXXX"
+    |> replace "XC" "LXXXX"
+    |> replace "CD" "CCCC"
+    |> replace "CM" "DCCCC"
+    |> replace "M" "DD"
+    |> replace "D" "CCCCC"
+    |> replace "C" "LL"
+    |> replace "L" "XXXXX"
+    |> replace "X" "VV"
+    |> replace "V" "IIIII" 
     |> String.length
 
 // test it

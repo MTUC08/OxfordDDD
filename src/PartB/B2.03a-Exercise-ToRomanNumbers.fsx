@@ -31,12 +31,19 @@ let replace (oldValue:string) (newValue:string) (inputStr:string) =
 
 let toRomanNumerals number =
     let replace_IIIII_V str = replace "IIIII" "V" str
-    let replace_VV_X str = replace ???
+    let replace_VV_X str = replace "VV" "X" str
+    let replace_XXXXX_L str = replace "XXXXX" "L" str
+    let replace_LL_C str = replace "LL" "C" str
+    let replace_CCCCC_D str = replace "CCCCC" "D" str
+    let replace_DD_M str = replace "DD" "M" str
 
     String.replicate number "I"
-    |> ???
-    |> ???
-    |> ???
+    |> replace_IIIII_V
+    |> replace_VV_X
+    |> replace_XXXXX_L
+    |> replace_LL_C
+    |> replace_CCCCC_D
+    |> replace_DD_M
 
 
 // test it
@@ -65,7 +72,11 @@ toRomanNumerals 1947
 let toRomanNumerals_v2 number =
     String.replicate number "I"
     |> replace "IIIII" "V"
-    |> ???
+    |> replace "VV" "X"
+    |> replace "XXXXX" "L"
+    |> replace "LL" "C"
+    |> replace "CCCCC" "D"
+    |> replace "DD" "M"
 
 
 // test it
@@ -89,22 +100,29 @@ toRomanNumerals_v2 1947
 //   Just replace "IIII" with "IV", etc
 // ======================================
 
-(*
 let toRomanNumerals_v3 number =
-   // add IV
-   // add IX
-   // TIP: additional special forms should be
-   // done highest to lowest
-*)
+   String.replicate number "I"
+    |> replace "IIIII" "V"
+    |> replace "VV" "X"
+    |> replace "XXXXX" "L"
+    |> replace "LL" "C"
+    |> replace "CCCCC" "D"
+    |> replace "DD" "M"
+    |> replace "DCCCC" "CM"
+    |> replace "CCCC" "CD"
+    |> replace "LXXXX" "XC"
+    |> replace "XXXX" "XL"
+    |> replace "VIIII" "IX"
+    |> replace "IIII" "IV"
 
-(*
+
+
 // test it
 toRomanNumerals_v3 4
 toRomanNumerals_v3 14
 toRomanNumerals_v3 19
 toRomanNumerals_v3 1947
 toRomanNumerals_v3 1999
-*)
 
 
 // ======================================
@@ -119,15 +137,25 @@ let toRomanNumerals_v4 number =
     // logger function
     let logger context pipelineValue =
         printfn $"[{context}] The pipeline value is {pipelineValue}" 
-        // is something missing?
+        pipelineValue
 
     String.replicate number "I"
     |> replace "IIIII" "V"
     |> logger "after V"
-    |> replace "VV" "X"   // why is this a compiler error?
+    |> replace "VV" "X"
+    |> logger "after X"    
     |> replace "XXXXX" "L" 
-    |> logger "after XXXXX"
-    //|> ???
-    //|> ???
-    // last step
+    |> logger "after L"    
+    |> replace "LL" "C"
+    |> logger "after C"
+    |> replace "CCCCC" "D"
+    |> logger "after D"
+    |> replace "DD" "M"
+    |> logger "after M"
+    |> replace "DCCCC" "CM"
+    |> replace "CCCC" "CD"
+    |> replace "LXXXX" "XC"
+    |> replace "XXXX" "XL"
+    |> replace "VIIII" "IX"
+    |> replace "IIII" "IV"
     |> logger "final result"
