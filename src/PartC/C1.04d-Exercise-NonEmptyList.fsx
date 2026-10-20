@@ -14,7 +14,7 @@ type undefined = exn
 
 // Exercise: define a type "NonEmptyList"
 //           so that "firstItem" always works
-type NonEmptyList<'a> = undefined
+type NonEmptyList<'a> = {first: 'a; rest: 'a list}
 
 /// Helper functions for NonEmptyList
 module NonEmptyList =
@@ -22,7 +22,7 @@ module NonEmptyList =
     /// Returns the first item in a NonEmptyList
     let first (aNonEmptyList:NonEmptyList<'a>) =
         // Exercise: implement this
-        notImplemented()
+        aNonEmptyList.first
 
     /// Convert a normal list to a NonEmptyList
     let fromList aList =
@@ -33,11 +33,9 @@ module NonEmptyList =
         // Exercise: implement this
         match aList with
         // input is an empty list
-        | [] ->
-            notImplemented()
+        | [] -> None
         // input is a non-empty list
-        | first::rest ->
-            notImplemented()
+        | first::rest -> Some {first=first; rest=rest}
 
 
 
@@ -45,8 +43,8 @@ module NonEmptyList =
     /// and the rest of the list (as an NonEmptyList option)
     let split (aNonEmptyList:NonEmptyList<'a>) =
         // Exercise: implement this
-        let first : 'a = notImplemented()
-        let rest : NonEmptyList<'a> option = notImplemented()
+        let first : 'a = aNonEmptyList.first
+        let rest : NonEmptyList<'a> option = aNonEmptyList.rest |> fromList
         (first, rest)
 
 
@@ -83,6 +81,6 @@ module CardGame =
     // the implementation of Deal
     let deal : Deal =
         fun (ShuffledDeck cardList) ->
-            let first,rest = ??
+            let first,rest = NonEmptyList.split cardList
             let newDeckOpt = rest |> Option.map (fun list -> ShuffledDeck list)
             first, newDeckOpt

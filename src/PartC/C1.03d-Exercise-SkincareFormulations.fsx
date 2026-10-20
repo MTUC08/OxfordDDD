@@ -68,20 +68,24 @@ List of CAS numbers: https://en.wikipedia.org/wiki/List_of_CAS_numbers_by_chemic
 // (dont need to implement the constraints)
 
 type CasNumber = CasNumber of string
-type Inci = ??
-// what else??
+type Inci = Inci of string
+type SupplierId = SupplierId of string
+type Percentage = Percentage of float
 
 // ===================================
 // 1. Define Ingredients
 // ===================================
 
 type IngredientComponent = {
+    Name: string
     CasNumber : CasNumber
-    // what else
+    Percentage: Percentage
 }
 
 type Ingredient = {
-    // what goes in here?
+    Name: string
+    SupplierId: SupplierId
+    Components: IngredientComponent list
 }
 
 // ===================================
@@ -90,11 +94,13 @@ type Ingredient = {
 
 
 type FormulationComponent = {
-    // what goes in here?
+    Ingredient: string
+    Percentage: Percentage
 }
 
 type Formulation = {
-    // what goes in here?
+    Name: string
+    Ingredients: FormulationComponent list
 }
 
 
@@ -105,19 +111,19 @@ type Formulation = {
 // Define a type for a single item on the ingredient label
 // It has INCI, percentage for the total formulation, and whether or not an allergen
 type IngredientLabelItem = {
+    Inci: Inci
+    Percentage: Percentage
     IsAllergen : bool
-    // what else goes in here?
 }
 
 // Define a type for entire ingredient label, with the items sorted by qty order
 type IngredientLabel = {
     FormulationName : string
-    Items: ??
+    Items: IncredientLabelItem list
 }
 
 // Define a function to get the ingredient label from a Formulation
-type FormulationToIngredientLabel =
-    Formulation -> ??
+type FormulationToIngredientLabel = Formulation -> IngredientLabel
 
 
 // ===================================

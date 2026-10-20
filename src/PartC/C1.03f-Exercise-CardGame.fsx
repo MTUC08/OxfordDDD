@@ -35,20 +35,30 @@ Exercise:
 
 module CardGame =
 
-    type Suit = ??
-    type Rank = ??
-    type Card = ??
+    type Suit = Heart | Spade | Club | Diamond
+    type Rank =
+        | Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten
+        | Jack | Queen | King | Ace
+    type Card = Suit * Rank
 
-    type Hand = ??
-    type Deck = ??
-    type ShuffledDeck = ??
+    type Hand = Card list
+    type Deck = Card list
+    type ShuffledDeck = ShuffledDeck of Card list
 
-    type Player = ??
-    type Game = ??
+    type Player = {
+        Name: string
+        Hand: Hand
+    }
+    type Game = {
+        Deck: Deck
+        Players: Player list
+    }
 
-    type Deal = ??
-    type PickUp = ??
-    type Shuffle = ??
+    type Deal = ShuffledDeck -> Card option * ShuffledDeck
+    // Choose option Card vs. option ShuffledDeck to simplify input since it implies
+    // ShuffledDeck could be empty
+    type PickUp = Card * Hand -> Hand
+    type Shuffle = Deck -> ShuffledDeck
 
     (*
     // Question: How do you document the rules of the game using types?
@@ -78,7 +88,7 @@ module CardGame =
     // calculate a number for one single card
     type ScoreCard = Card * AreAcesHigh -> Score
     // calculate a number for a complete hand
-    type ScoreHand = ??
+    type ScoreHand = Hand * AreAcesHigh -> Score
 
 // =====================================
 // Exercise 2: Optional. Implement the Card Game actions
@@ -86,7 +96,7 @@ module CardGame =
 
 
 // uncomment this after you fix the errors above
-(*
+
 // helper function for shuffling implementation
 module Util =
 
@@ -109,7 +119,7 @@ module Util =
 
         // convert back to an immutable list
         List.ofArray a
-*)
+
 
 
 // start implementation here ====>
@@ -117,46 +127,45 @@ module Util =
 module CardGameImplementation =
     open CardGame
 
-    // optionally implement some functions here
-    // uncomment them after you fix the errors above
-
-    (*
     let pickup : PickUp =
         fun (card,hand) ->
             // the "::" operator prepends the card to the hand
             let newHand = card::hand
             newHand
-    *)
-
-    (*
+    
     let deal : Deal =
         fun (ShuffledDeck deck) ->
             // the "::" pattern deconstructs a non-empty list into head/tail
             match deck with
-            | first::rest -> first, ShuffledDeck rest
-            | [] -> // what goes here?
-    *)
-
-
-    (*
+            | first::rest -> Some first, ShuffledDeck rest
+            | [] -> None, ShuffledDeck []
+   
     let shuffle : Shuffle =
         fun deck ->
             // use the utility function from above
-            let shuffledCards = Util.fisherYatesShuffle ??
-            ??
-    *)
+            let shuffledCards = Util.fisherYatesShuffle deck
+            ShuffledDeck shuffledCards
 
-    (*
     let scoreCard : ScoreCard =
-        fun (card,areAcesHigh) ->
-            match card with
-            | Ace -> if areAcesHigh then ??
-            | King -> ??
-    *)
-
-    (*
+        fun ((suit, rank), areAcesHigh) ->
+            match rank with
+            | Ace -> if areAcesHigh then 11 else 1
+            | King -> 10
+            | Queen -> 10
+            | Jack -> 10
+            | Ten -> 10
+            | Nine -> 9
+            | Eight -> 8
+            | Seven -> 7
+            | Six -> 6
+            | Five -> 5
+            | Four -> 4
+            | Three -> 3
+            | Two -> 2
+    
     let scoreHand : ScoreHand =
-        fun (hand,areAcesHigh) ->
-            // use List.map to apply a function to each element of a list
-            // use List.sum to add up a list
-    *)
+        fun (hand, areAcesHigh) ->
+            hand
+            |> List.map (fun card -> scoreCard(card, areAcesHigh))
+            |> List.sum
+            

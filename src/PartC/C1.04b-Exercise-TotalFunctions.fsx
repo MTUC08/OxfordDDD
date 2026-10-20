@@ -10,22 +10,22 @@ Quiz:
 Which of these are total functions
 and which are partial functions?
 
-// get first element of a list
+// get first element of a list (partial)
 firstElement : int list -> int
 
-// get number of elements in a list
+// get number of elements in a list (total)
 elementCount : int list -> int
 
-// convert a str to an int
+// convert a str to an int (partial)
 strToInt : string -> int
 
-// format an int into a string
+// format an int into a string (total)
 intToStr : int -> string
 
-// convert a 32-bit int into a 16-bit int
+// convert a 32-bit int into a 16-bit int (partial)
 longToInt : int32 -> int16
 
-// convert a float into an int (assuming truncation of decimals)
+// convert a float into an int (total)
 floatToInt: float -> int
 
 *)
@@ -71,20 +71,26 @@ module Calendar =
 
     // Exercise: convert the function to be total
     //           by extending the output.
-    let strToDayOfWeek str = notImplemented()
+    let strToDayOfWeek str =
+        match str with
+        | "Sunday" | "Sun" -> Some Sun
+        | "Monday" | "Mon" -> Some Mon
+        | "Tuesday" | "Tue" -> Some Tue
+        | "Wednesday" | "Wed" -> Some Wed
+        | "Thursday" | "Thu" -> Some Thu
+        | "Friday" | "Fri" -> Some Fri
+        | "Saturday" | "Sat" -> Some Sat
+        | _ -> None
 
-
-(*
 // test the exception throwing function
 Calendar.strToDayOfWeek_WithException "Sunday"  // good
 Calendar.strToDayOfWeek_WithException "Sun"     // good
-Calendar.strToDayOfWeek_WithException "April"   // exception :(
+// Calendar.strToDayOfWeek_WithException "April"   // exception :(
 
 // test the total function
 Calendar.strToDayOfWeek "Sunday"  // good
 Calendar.strToDayOfWeek "Sun"     // good
 Calendar.strToDayOfWeek "April"   // nice error
-*)
 
 
 // -----------------------------------
@@ -107,18 +113,19 @@ module IntUtil =
     //
     // Question: Why is it not called "strToInt"
     // like the original function?
-    let tryStrToInt s = notImplemented()
+    let tryStrToInt (str:string) =
+        match System.Int32.TryParse str with
+        // the Int32.TryParse method returns a tuple
+        | (true,i) -> Some i
+        | (false,_) -> None
 
-(*
 // test the exception throwing function
 IntUtil.strToInt_WithException "123"     // good
-IntUtil.strToInt_WithException "hello"   // exception :(
+// IntUtil.strToInt_WithException "hello"   // exception :(
 
 // test the total function
 IntUtil.tryStrToInt "123"     // good
 IntUtil.tryStrToInt "hello"   // nice error
-
-*)
 
 // -----------------------------------
 // 3. Create a function that gets the first item in a list
@@ -147,18 +154,22 @@ module ListUtil =
     // Exercise: Convert this function to be total
     //           by extending the output.
     // Suggestion: it should have a different name!
-    let firstItem aList = notImplemented()
+    let firstItem aList =
+        match aList with
+        // match an empty list
+        | [] -> None
+        // match an non-empty list
+        | first::rest -> Some first // return the first item
 
 let emptyList :int list = []
 // NOTE: the :int list is just to get around an issue working interactively!
 // it is not normally needed
 
-(*
 // test the exception throwing function
 ListUtil.firstItem_withException [1;2;3]         // good
-ListUtil.firstItem_withException(emptyList)     // exception :(
+// ListUtil.firstItem_withException(emptyList)     // exception :(
 
 // test the total function
-ListUtil.tryFirstItem [1;2;3]      // good
-ListUtil.tryFirstItem (emptyList)  // no exception!
-*)
+ListUtil.firstItem [1;2;3]      // good
+ListUtil.firstItem (emptyList)  // no exception!
+
