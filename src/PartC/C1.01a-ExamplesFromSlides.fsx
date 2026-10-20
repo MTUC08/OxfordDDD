@@ -84,7 +84,7 @@ module ExamplesFromSlides_2 =
     type OrderLineQty = OrderLineQty of int
 
     let createOrderLineQty qty =
-        if qty >0 && qty <= 99 then
+        if qty > 0 && qty <= 99 then
             Some (OrderLineQty qty)
         else
             None
