@@ -43,38 +43,41 @@ type undefined = exn
 // How can you enforce this rule:
 //   * The microwave cannot be running if the TimeRemaining = 0
 // ===========================
-
-type TimeRemaining = undefined
+type NonZeroInteger = private NonZeroInteger of int
+type TimeRemaining = private TimeRemaining of NonZeroInteger
 
 
 // ===========================
 // 1. Define a type for information stored in each state
 //    and a type for the four states combined
 // ===========================
-
-
-
-type DoorOpenIdleState = DoorOpenIdleState
-    // Note: even though there is no data, we want to keep these two states separate,
-    // so we define a new type for each one.
-    // We can do that by using the name of the type.
-
-type DoorClosedIdleState = ??
-type RunningState = ??
-
-// what else
+type DoorOpenIdleState = DoorOpenIdle
+type DoorClosedIdleState = DoorClosedIdle
+type RunningState = {
+    timeRemaining: TimeRemaining
+}
+type DoorOpenPausedState = {
+    timeRemaining: TimeRemaining
+}
 type State =
-    // DoorClosedIdle etc
-
+    | DoorOpenIdle of DoorOpenIdleState
+    | DoorClosedIdle of DoorClosedIdleState
+    | Running of RunningState
+    | DoorOpenPaused of DoorOpenPausedState
+    
+type DoorClosedState =
+    | DoorClosedIdle of DoorClosedIdleState
+    | Running of RunningState
 
 // ===========================
 // 2. Define a function type for each action:
 //    Start/OpenDoorWhileRunning/CloseDoorWhilePaused etc
 // ===========================
 
-type Start = ??
-type OpenDoorWhileIdle = ??
-// what other actions?
+type Start = TimeRemaining * DoorClosedState -> RunningState
+type OpenDoorWhileIdle = DoorClosedIdleState -> DoorOpenIdleState
+type OpenDoorWhileRunning = RunningState -> DoorOpenPausedState
+type CloseDoorWhilePaused = DoorOpenPausedState -> DoorClosedState
 
 
 // ===========================
@@ -83,7 +86,7 @@ type OpenDoorWhileIdle = ??
 //    by a timer inside the oven
 // ===========================
 
-type TimerTick = ??
+type TimerTick = State -> State
 
 
 // ===========================
@@ -92,7 +95,8 @@ type TimerTick = ??
 // ===========================
 
 // Define functions that represent this transition
-
+type StopWhileRunning = RunningState -> DoorClosedIdleState
+type StopWhilePaused = DoorOpenPausedState -> DoorOpenIdleState
 
 
 // ===========================

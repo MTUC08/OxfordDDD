@@ -9,8 +9,8 @@
 
 A LaptopSpec contains a number of components such as a CPU, memory, etc
 
-1. Do the LaptopSpec + components form an Aggregate?
-2. Is the LaptopSpec an Aggregate root?
+1. Do the LaptopSpec + components form an Aggregate? Yes
+2. Is the LaptopSpec an Aggregate root? Yes
 
 *)
 
@@ -24,8 +24,8 @@ A LaptopSpec contains a number of components such as a CPU, memory, etc
 
 A Course contains a number of student Enrolments
 
-1. Do the Course + Enrolments form an Aggregate?
-2. Is the Course an Aggregate root?
+1. Do the Course + Enrolments form an Aggregate? No
+2. Is the Course an Aggregate root? No
 
 *)
 
@@ -39,8 +39,8 @@ A Course contains a number of student Enrolments
 
 A generic List collection contains a list of entities
 
-1. Does the List + list items form an Aggregate?
-2. Is the List an Aggregate root?
+1. Does the List + list items form an Aggregate? No
+2. Is the List an Aggregate root? No
 
 *)
 

@@ -40,15 +40,17 @@ module ShoppingCartApi =
     type CartContents = CartItem list  // placeholder for now
 
     // Create types to represent the data stored for each state
-    type EmptyCartData = undefined  //what data to store?
-    type ActiveCartData = undefined  //what data to store?
-    type PaidCartData = undefined //what data to store?
+    type ActiveCartData = ActiveCartData of CartItem list
+    type PaidCartData = {
+        Contents: CartItem list
+        Payment : Payment
+    }
 
     // Create a "state" type that represents the union of all the states
     type ShoppingCart =
         | EmptyCartState
-        | ActiveCartState of undefined // what goes here?
-        | PaidCartState of undefined // what goes here?
+        | ActiveCartState of ActiveCartData
+        | PaidCartState of PaidCartData
 
 
     // Next, define the transitions using types but
@@ -58,10 +60,10 @@ module ShoppingCartApi =
     type InitCart = CartItem -> ShoppingCart
 
     /// "addToActive" creates a new state from ActiveCartData and a new CartItem
-    type AddToActive = undefined
+    type AddToActive = ActiveCartData * CartItem -> ShoppingCart
 
     /// "pay" creates a new state from ActiveCartData and a Payment
-    type Pay = undefined
+    type Pay = ActiveCartData * Payment -> ShoppingCart
 
     /// "removeFromActive" creates a new state from ActiveCartData after removing a CartItem
-    type RemoveFromActive = undefined
+    type RemoveFromActive = ActiveCartData * CartItem -> ShoppingCart
