@@ -5,7 +5,6 @@
 
 /'
 The objects or actors involved in creating a new user account:
-
 Librarian
 LibraryManagementSystem
 UserCredentialsDB
@@ -13,7 +12,6 @@ EmailSystem
 User
 
 The steps are:
-
 1. The librarian request the system to create a new online library account
 2. The librarian then selects the library user account type
 3. The librarian enters the user’s details
@@ -23,15 +21,17 @@ The steps are:
 
 '/
 
-
-
 @startuml
-
 actor Librarian
 participant LibraryManagementSystem
 database UserCredentialsDB
 participant EmailSystem
 actor User
 
-
+Librarian -> LibraryManagementSystem: 1. New Account Request
+Librarian -> LibraryManagementSystem: 2. Select Account Type
+Librarian -> LibraryManagementSystem: 3. Enter User Details
+LibraryManagementSystem -> UserCredentialsDB: 4. Validate User Details
+LibraryManagementSystem -> LibraryManagementSystem: 5. Create New Account
+LibraryManagementSystem -> User: 6. Email Account Details
 @enduml

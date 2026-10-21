@@ -50,9 +50,18 @@ let checkEmailMustHaveAtSign input =
 let validateInput input =
     input
     |> checkNameNotBlank
-    |> ??  // checkName50
-    |> ??  // checkEmailNotBlank
-    |> ??  // checkEmailMustHaveAtSign
+    |> (fun result ->
+      match result with
+      | Ok input -> checkName50 input
+      |_ -> result)
+    |> (fun result ->
+      match result with
+      | Ok input -> checkEmailNotBlank input
+      |_ -> result)
+    |> (fun result ->
+      match result with
+      | Ok input -> checkEmailMustHaveAtSign input
+      |_ -> result)
 
     // add some more validations if you like
 

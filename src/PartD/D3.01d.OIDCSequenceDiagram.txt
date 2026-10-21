@@ -5,10 +5,20 @@
 
 @startuml
 participant RelyingParty
-actor EndUser
+participant EndUser
 participant AuthorizationServer
 participant TokenEndpoint
 participant UserInfoEndpoint
 
-RelyingParty -> RelyingParty : Step 1
+RelyingParty -> RelyingParty : 1. Prepare Authorization Request
+RelyingParty -> AuthorizationServer: 2. Authorization Request
+AuthorizationServer <- EndUser: 3. Authenticate End User
+EndUser -> AuthorizationServer: 4. Consent/authorization
+AuthorizationServer <- EndUser: 5. Redirect with ...
+EndUser <- RelyingParty: 6. ... Authorization Code
+RelyingParty -> TokenEndpoint: 7. Authorization Code
+TokenEndpoint <- RelyingParty: 8. Access Token and ID Token
+RelyingParty -> RelyingParty: 9. Validate ID Token and get End User subject ID
+RelyingParty -> UserInfoEndpoint: 10. (Optional) Access Token
+UserInfoEndpoint <- RelyingParty: 11. (Optional) UserInfo Response
 @enduml

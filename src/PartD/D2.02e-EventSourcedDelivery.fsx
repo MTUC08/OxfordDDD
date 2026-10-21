@@ -67,10 +67,14 @@ type ShipmentState =
 
 /// A desired action/
 type DeliveryCommand =
-    // fill these in
-    ??
+    | SendOutForDelivery of TruckId
+    | Sign of Signature
+    | CannotFindAddress
+    | Redeliver of TruckId
 
 /// An event representing a state change that happened
 type DeliveryEvent =
-    // fill these in
-    ??
+    | SentOutForDelivery of TruckId
+    | SignedFor of Signature
+    | AddressNotFound
+    | Redelivered of TruckId

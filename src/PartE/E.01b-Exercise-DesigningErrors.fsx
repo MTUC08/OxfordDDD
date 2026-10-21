@@ -34,13 +34,13 @@ module TicTacToe =
     // Document the possible errors that can happen
     // when making a move
     type MoveError =
-      | PlayedSameSquare of Square
-      | ??
-      | ??
+      | PlayedOccupiedSquare of Square
+      | PlayedTwiceInARow of Player
+      | PlayedAfterGameOver of Player
 
 
     // In the main workflow , use a Result as the output
-    type PlayMove = MoveInformation -> Result<MoveSuccess,MoveError>
+    type PlayMove = MoveInformation -> Result<MoveSuccess, MoveError>
 
 
 //-------------------------------------
@@ -64,7 +64,9 @@ module AtmCashMachine =
     // when withdrawing money
     type WithdrawalError =
         | CardNotAcceptedHere
-        | ??
+        | PinNotValid
+        | BalanceTooLow of AmountToWithdraw
+        | MachineOutOfOrder
 
     // In the main workflow , use a Result as the output
     type WithdrawMoney =
@@ -95,7 +97,11 @@ module CoffeeMaker =
     // when making coffee
 
     /// Tell the user that their coffee was not made
-    type CoffeeMakingError = ??
+    type CoffeeMakingError =
+        | NotEnoughWater
+        | NotEnoughMilk
+        | NotEnoughCoffee
+        | MachineOutOfOrder
 
 
     // In the main workflow , use a Result as the output

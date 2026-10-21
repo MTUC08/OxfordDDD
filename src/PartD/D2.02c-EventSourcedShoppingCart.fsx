@@ -46,12 +46,15 @@ type ShoppingCart =
 
 /// A desired action
 type CartCommand =
-    // fill these in
-    ??
-
+    | InitCart of CartItem
+    | Add of CartItem
+    | Remove of CartItem
+    | Pay of Payment
+    
 
 /// An event representing a state change that happened
 type CartEvent =
-    // fill these in
-    ??
-
+    | Created
+    | AddItem of CartItem
+    | RemovedItem of CartItem
+    | Paid of Payment
