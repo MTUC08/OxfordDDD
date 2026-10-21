@@ -51,9 +51,9 @@ let resultBind nextFunction result =
 
 let validateInput input =
     input
-    |> ??
-    |> ??
-    |> ??
+    |> checkNameNotBlank
+    |> resultBind checkName50
+    |> resultBind checkEmailNotBlank
 
 
 // -------------------------------
@@ -76,4 +76,24 @@ validateInput blankEmail
 // examples:
 // * email contains @ symbol  -- use Email.Contains("@")
 // * email length < 50        -- use Email.Length
+
+let checkEmailHasAtSign input =
+  if not (input.Email.Contains("@")) then
+    Error "Email must have @ sign"
+  else
+    Ok input
+    
+let checkEmailUnder50Chars input =
+  if input.Email.Length >= 50 then
+    Error "Email must be < 50 chars"
+  else
+    Ok input
+    
+let validateInputV2 input =
+    input
+    |> checkNameNotBlank
+    |> resultBind checkName50
+    |> resultBind checkEmailNotBlank
+    |> resultBind checkEmailHasAtSign
+    |> resultBind checkEmailUnder50Chars
 
