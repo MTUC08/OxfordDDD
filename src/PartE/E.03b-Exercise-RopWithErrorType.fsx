@@ -253,7 +253,7 @@ let returnMessageR translator result =
         let htmlCode =
             match msg with
             | SmtpServerError _ -> 500
-            | _ -> 400
+            | NameNotBlank | NameTooLong _ | EmailCannotBeBlank | EmailTooLong _ -> 400
         let errStr = translator msg
         sprintf "%i %s" htmlCode errStr
 
