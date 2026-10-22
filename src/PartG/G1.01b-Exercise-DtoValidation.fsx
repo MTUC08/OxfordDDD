@@ -57,8 +57,10 @@ let createPerson name age email :Person =
 let toDto (person:Person) :PersonDto =
     // Exercise: create a function "toDto" that converts a Person into a DTO
     {
-    first = String10.value person.Name.First
-    ??
+        first = person.Name.First |> String10.value
+        last = person.Name.Last |> String10.value
+        age = person.Age |> Age.value
+        email = person.Email |> Email.value
     }
 
 /// Exercise: Create a person from a DTO.
@@ -69,16 +71,25 @@ let fromDto (personDto:PersonDto) :Validation<Person,string> =
         personDto.first
         |> String10.create "first name"
         |> Validation.ofResult
-    let lastOrError = ??
-    let ageOrError = ??
-    let emailOrError = ??
+    let lastOrError =
+        personDto.last
+        |> String10.create "last name"
+        |> Validation.ofResult
+    let ageOrError =
+        personDto.age
+        |> Age.create
+        |> Validation.ofResult
+    let emailOrError =
+        personDto.email
+        |> Email.create
+        |> Validation.ofResult
 
     // use map2 here
-    let nameOrError = ??
+    let nameOrError = Validation.map2 createName firstOrError lastOrError 
     // use map3 here
 
     // see similar exercise in E.05b-Exercise-ValidationWithMap.fsx
-    let personOrError = ??
+    let personOrError = Validation.map3 createPerson nameOrError ageOrError emailOrError
 
     personOrError // return
 

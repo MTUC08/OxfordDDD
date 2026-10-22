@@ -15,7 +15,6 @@
     <Content Include="H1.04b-Exercise-ContextMaps(answers).txt" />
     <None Include="ContextMap-DDDSample.cml" />
     <None Include="ContextMap-Insurance.cml" />
-    <None Include="H.slides_summary.md" />
   </ItemGroup>
 
 </Project>

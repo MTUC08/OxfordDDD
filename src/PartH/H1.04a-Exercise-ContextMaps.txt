@@ -33,7 +33,16 @@ Exercise: Create a context map for this domain
 
 Answer:
 
-(see answer file)
+ContextMap ECommerceStartupMap {
+    contains ThirdPartyPaymentProcessor
+    contains ThirdPartyFulfillmentService
+    contains ThirdPartyEmailService
+    contains ECommerceStartup
+    
+    ECommerceStartup [ACL] <- ThirdPartyPaymentProcessor
+    ECommerceStartup [ACL] <- ThirdPartyFulfillmentService
+    ECommerceStartup [ACL] <- ThirdPartyEmailService
+}
 
 
 ======================================
@@ -53,4 +62,15 @@ Exercise: Create a context map for this domain
 
 Answer:
 
-(see answer file)
+ContextMap ECommerceStartupMap {
+    contains ConferencePlanner
+    contains ThirdPartyHotelReservationSystem
+    contains ThirdPartyAirlineReservationSystem
+    contains Contractor
+    contains ReportingSystemTool
+    
+    ConferencePlanner [ACL, CF] <- ThirdPartyHotelReservationSystem
+    ConferencePlanner [ACL, CF] <- ThirdPartyAirlineReservationSystem
+    ConferencePlanner [SK] <-> [SK] Contractor
+    ConferencePlanner [CF] <-> ReportingSystemTool
+}
