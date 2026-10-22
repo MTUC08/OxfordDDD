@@ -61,7 +61,9 @@ let workflow input =
 // ----------------------------------
 // so we need to define a common type with both errors
 
-type WorkflowError = ??
+type WorkflowError =
+    | ValidationCase of ValidationError
+    | DatabaseCase of DatabaseError
 
 
 // ----------------------------------
@@ -73,12 +75,12 @@ let workflow input =
         input
         |> checkNameNotBlank
         |> Result.bind checkEmailNotBlank
-        // add mapError here
+        |> Result.mapError ValidationCase
 
     let saveToDb input =
         input
         |> updateDatabase
-        // add mapError here
+        |> Result.mapError DatabaseCase
 
     input
     |> validate

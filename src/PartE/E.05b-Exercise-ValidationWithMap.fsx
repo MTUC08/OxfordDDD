@@ -89,7 +89,7 @@ let createNameOrError (inputFirst:string) (inputLast:string) =
         |> Validation.ofResult
     // Exercise: fix the compiler error by using Validation.map2
     let nameOrError =
-        createName firstOrError lastOrError
+        (Validation.map2 createName) firstOrError lastOrError
     nameOrError // return
 
 // -------------------------------
@@ -114,11 +114,11 @@ let createPerson name age email :Person =
 let createPersonOrError (inputFirst:string) (inputLast:string) (inputAge:int) (inputEmail:string) =
 
     // Exercise: fix the error
-    let nameOrError = createName inputFirst inputLast
+    let nameOrError = createNameOrError inputFirst inputLast
 
     let ageOrError =
         Age.create inputAge
-        // Exercise: fix the compiler error by converting the Result to a Validation
+        |> Validation.ofResult
 
     let emailOrError =
         Email.create inputEmail
@@ -126,7 +126,7 @@ let createPersonOrError (inputFirst:string) (inputLast:string) (inputAge:int) (i
 
     // Exercise: fix the compiler error 
     let personOrError =
-        createPerson nameOrError ageOrError emailOrError
+        (Validation.map3 createPerson) nameOrError ageOrError emailOrError
 
     personOrError // return
 
