@@ -56,9 +56,9 @@ module Implementation =
     //   return ErrorMessage.NoWater
     let checkWaterStatus coffeeMachineState request =
       if coffeeMachineState.HasWater then
-        // request
+        Ok request
       else
-        // ErrorMessage.NoWater
+        Error ErrorMessage.NoWater
 
     // If the request is HotWater, return the request
     // If the request is Espresso/Cappuccino/Latte then
@@ -67,10 +67,12 @@ module Implementation =
     //   * if no, return ErrorMessage.NoCoffee
     let checkCoffeeStatus coffeeMachineState request =
       match request with
-      | HotWater ->
-        // request
+      | HotWater -> Ok request
       | Espresso | Cappuccino | Latte ->
-        ??
+        if coffeeMachineState.HasCoffee then
+            Ok request
+        else
+            Error ErrorMessage.NoCoffee
 
     // If the request is HotWater/Espresso, return the request
     // If the request is Cappuccino/Latte then
@@ -79,15 +81,20 @@ module Implementation =
     //   * if no, return ErrorMessage.NoMilk
     let checkMilkStatus coffeeMachineState request =
       match request with
-      ??
+      | HotWater | Espresso -> Ok request
+      | Cappuccino | Latte ->
+          if coffeeMachineState.HasMilk then
+              Ok request
+          else
+              Error ErrorMessage.NoMilk
 
     // validate the request by checking against the internal state
     // of the machine
     let validateRequest coffeeMachineState request =
       request
       |> checkWaterStatus coffeeMachineState
-      |> (checkCoffeeStatus coffeeMachineState) // fix error
-      |> (checkMilkStatus coffeeMachineState)
+      |> Result.bind (checkCoffeeStatus coffeeMachineState) // fix error
+      |> Result.bind (checkMilkStatus coffeeMachineState)
 
 
     /// Validate the request and if OK, return the Success message

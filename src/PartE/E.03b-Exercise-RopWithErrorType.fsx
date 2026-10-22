@@ -250,8 +250,12 @@ let returnMessageR translator result =
     | Ok obj ->
         sprintf "200 %A" obj
     | Error msg ->
+        let htmlCode =
+            match msg with
+            | SmtpServerError _ -> 500
+            | _ -> 400
         let errStr = translator msg
-        sprintf "400 %s" errStr
+        sprintf "%i %s" htmlCode errStr
 
 // -------------------------------
 // test the "returnMessageR" step interactively
