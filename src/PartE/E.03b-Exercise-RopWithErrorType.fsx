@@ -35,8 +35,11 @@ type Request = {
 //===========================================
 
 type ErrorMessage =
-  | NameNotBlank   // name not blank
-  // add others as needed
+  | NameNotBlank
+  | NameTooLong of int
+  | EmailCannotBeBlank
+  | EmailTooLong of int
+  | SmtpServerError of string
 
 //===========================================
 // Step 1 of the pipeline: validation
@@ -49,7 +52,7 @@ let nameNotBlank input =
     Ok input
 
 // EXERCISE implement the error case
-let name50 input =
+let nameTooLong input =
   if input.Name.Length > 50 then
     Error (NameTooLong 50)
   else
@@ -64,16 +67,19 @@ let emailNotBlank input =
 
 // EXERCISE add a function that fails if the email > 255 chars. 
 // input.Email.Length will give you the length
-let emailToLong input =
-    ???
+let emailTooLong input =
+    if input.Email.Length > 255 then
+        Error (EmailTooLong 255)
+    else
+        Ok input
 
 /// Combine all the smaller validation functions into one big one
 let validateRequest input =
   input
   |> nameNotBlank
-  |> Result.bind name50
+  |> Result.bind nameTooLong
   |> Result.bind emailNotBlank
-  |> ??
+  |> Result.bind emailTooLong
 
 // -------------------------------
 // test the "validateRequest" step interactively
@@ -157,8 +163,7 @@ let sendEmail (request:Request) =
 let sendEmailR twoTrackInput =
     // convert SMTP exceptions to our list
     let handler (ex:exn) = // Smtp Server Error with ex.Message as data
-       // TODO Add SmtpServerError to the Error choice type!
-       // Note that it has data associated with this choice.
+       SmtpServerError ex.Message
     RopUtil.catchR sendEmail handler twoTrackInput
 
 // -------------------------------
@@ -210,24 +215,28 @@ goodRequest     // also try badRequest and unsendableRequest here
 // EXERCISE match the errors to the translations
 let translateError_EN err =
     match err with
-    | ?? ->
+    | NameNotBlank ->
         "Name must not be blank"
-    | ?? i ->
+    | NameTooLong i ->
         sprintf "Name must not be longer than %i chars" i
-    | ?? ->
+    | EmailCannotBeBlank ->
         "Email must not be blank"
+    | EmailTooLong i ->
+        sprintf "Email must not be longer than %i chars" i
     | SmtpServerError msg ->
         sprintf "SmtpServerError [%s]" msg
 
 // EXERCISE match the errors to the translations
 let translateError_FR err =
     match err with
-    | ?? ->
+    | NameNotBlank ->
         "Nom ne doit pas être vide"
-    | ?? i ->
+    | NameTooLong i ->
         sprintf "Nom ne doit pas être plus long que %i caractères" i
-    | ?? ->
+    | EmailCannotBeBlank ->
         "Email doit pas être vide"
+    | EmailTooLong i ->
+        sprintf "L'e-mail ne doit pas dépasser %i caractères" i
     | SmtpServerError msg ->
         sprintf "SmtpServerError [%s]" msg
 
